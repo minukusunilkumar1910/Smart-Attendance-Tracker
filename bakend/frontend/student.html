@@ -1,0 +1,268 @@
+<!-- // attendence-system\backend\frontend\student.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <title>Student Attendance</title>
+    <script>
+        // Classroom coordinates
+        const classroomLatitude = 13.6561696;
+        const classroomLongitude = 79.4816268;
+        const allowedRadius = 0; // Increased radius slightly for GPS accuracy
+
+        // Function to check if the student is in the classroom
+        function checkLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        const distance = getDistanceFromLatLonInM(latitude, longitude, classroomLatitude, classroomLongitude);
+
+                        console.log(`📍 Student Location: ${latitude}, ${longitude}`);
+                        console.log(`📏 Distance from Classroom: ${distance.toFixed(2)} meters`);
+
+                        // If within allowed radius, show attendance form
+                        if (distance <= allowedRadius) {
+                            document.getElementById("attendanceForm").style.display = "block";
+                        } else {
+                            alert("❌ You are outside the classroom. Attendance marking is not allowed.");
+                            window.location.href = "error.html";
+                        }
+                    },
+                    (error) => {
+                        alert("⚠️ Geolocation is not enabled. Please enable it to mark attendance.");
+                        window.location.href = "error.html";
+                    },
+                    { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 } // Force fresh GPS data
+                );
+            } else {
+                alert("❌ Geolocation is not supported by this browser.");
+                window.location.href = "error.html";
+            }
+        }
+
+        // Function to calculate distance between two lat/long coordinates
+        function getDistanceFromLatLonInM(lat1, lon1, lat2, lon2) {
+            const R = 6371e3; // Earth radius in meters
+            const φ1 = lat1 * Math.PI / 180;
+            const φ2 = lat2 * Math.PI / 180;
+            const Δφ = (lat2 - lat1) * Math.PI / 180;
+            const Δλ = (lon2 - lon1) * Math.PI / 180;
+
+            const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+            return R * c; // Distance in meters
+        }
+    </script>
+
+
+<body onload="checkLocation()">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-image: url("./assets/bg2.jpg");
+
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+            height: 100vh;
+
+        }
+
+        .mid {
+           
+            padding: 2rem;
+            border-radius: 10px;
+          
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.9rem;
+            color: #090101;
+            text-align: center;
+            font-family:Georgia, 'Times New Roman', Times, serif;
+        }
+
+        input[type="text"],
+        select,
+        button {
+            background: #33333300;
+            color: rgb(237, 236, 249);
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 1.3rem;
+            border: none;
+            border-bottom:2px solid white;
+        }
+
+        button {
+            background-color: #f6f7f9;
+            color: rgb(10, 4, 4);
+            border: none;
+            cursor: pointer;
+            border-radius: 2rem ;
+        }
+
+        label {
+            color: rgb(255, 255, 255);
+            font-size: larger;
+        }
+
+        button:hover {
+            background-color: #473dd6;
+        }
+
+        p {
+            margin-top: 20px;
+            color: #333;
+        }
+
+        div {
+            padding: 2rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+       #codeinput #nameInput 
+       {
+        font-size: 1.5rem;
+        background-color: transparent;
+       }
+       
+
+        .container {
+            width: 50rem;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-radius: 1rem;
+            border: 1px solid #eeeef1;
+            background: linear-gradient(to right, #051a26ac, #36379572);
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+          }
+          .container:hover{
+            border: 1px solid black;
+          }
+          
+          .container form .descr {
+            font-size: 30px;
+            font-weight: 500;
+            color: #e8e8e8;
+            margin-bottom: 25px;
+            margin-top: 25px;
+            text-align: center;
+          }
+          
+        
+          .input, textarea {
+            margin: 1em 0 1em 0;
+            width: 700px;
+            position: relative;
+          }
+          
+          .input input, textarea {
+            font-size: 100%;
+            padding: 0.7em;
+            outline: none;
+            color: #e8e8e8;
+            border: none;
+            border-bottom: 2px solid #e8e8e8;
+            background: transparent;
+            border-radius: none;
+            width: 100%;
+            resize: none;
+          }
+          
+          .input label {
+            font-size: 100%;
+            position: absolute;
+            left: 0;
+            color: #f1f3f6;
+            padding: 0.7em;
+            margin-left: 0.1em;
+            pointer-events: none;
+            transition: all 0.5s ease;
+            text-transform: uppercase;
+          }
+          
+          .input :is(input:focus, input:valid)~label {
+            transform: translateY(-90%) scale(.9);
+            margin: 0em;
+            padding: 0.4em;
+            background: transparent;
+          }
+          
+          .input textarea:focus ~ label,
+          .input textarea:valid ~ label {
+            transform: translateY(-90%) scale(.9);
+            margin: 0em;
+            padding: 0.4em;
+            background: transparent;
+          }
+          
+          .inputGroup :is(input:focus, input:valid) {
+            border-color: rgb(37, 37, 211);
+          }
+          
+           /* card effect */
+           
+          
+    </style>
+
+    <div class="mid">
+        <h1>Student Attendance</h1>
+        <div class="container" id="attendanceForm" style="display:none;">
+            <!-- <h2>Enter Attendance Code</h2> -->
+              <div class="input">
+
+                  <input type="text" id="nameInput" placeholder="" required>
+                  <label for="nameInput">Your Name:</label>
+              </div>
+
+              <div class="input">
+
+                  <!-- <label for="periodSelect">Select Period:</label> -->
+                  <select id="periodSelect">
+                      <option value="1">Period 1</option>
+                      <option value="2">Period 2</option>
+                      <option value="3">Period 3</option>
+                      <option value="4">Period 4</option>
+                      <option value="5">Period 5</option>
+                      <option value="6">Period 6</option>
+                    </select>
+                </div>
+
+
+            <div class="input">
+
+                <input type="text" id="codeInput" placeholder="" required>
+                <label for="codeInput">Attendance Code:</label>
+            </div>
+
+            <button id="submitAttendance">Submit Attendance</button>
+            <p id="responseMessage"></p>
+        </div>
+   
+
+      
+
+
+    </div>
+    <script src="js/student.js"></script>
+</body>
+
+</html>

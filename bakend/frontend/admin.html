@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+
+   <style>
+      /* Admin Page Specific Styles */
+h1 {
+   text-align: center;
+}
+
+form {
+   margin: 30px 0;
+   color:blue;
+}
+
+input[type="text"], input[type="password"], button {
+   width: 100%;
+   height: 20px;
+}
+
+#studentRecords {
+   margin-top: 20px;
+   padding: 20px;
+   background: #fff;
+   border-radius: 5px;
+   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+button
+{
+    background-color: #28a745;
+    color: white;
+    height: 40px;
+    border: none;
+    cursor: pointer;
+   }
+   </style>
+ 
+    <h1>Admin Dashboard</h1>
+
+    <h2>Manage Students</h2>
+    <form id="studentForm">
+        <label for="studentName">Student Name:</label>
+        <input type="text" id="studentName" placeholder="Enter student name" required>
+
+        <label for="rollNumber">Roll Number:</label>
+        <input type="text" id="rollNumber" placeholder="Enter roll number" required>
+
+        <label for="studentPassword">Password:</label>
+        <input type="password" id="studentPassword" placeholder="Enter password" required>
+
+        <button type="submit">Add Student</button>
+    </form>
+
+    <h2>Existing Students</h2>
+    <div id="studentRecords"></div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
